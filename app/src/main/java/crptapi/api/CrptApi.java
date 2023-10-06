@@ -1,10 +1,15 @@
 package crptapi.api;
 
+import crptapi.models.Document;
+
 import javax.net.ssl.HttpsURLConnection;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -22,7 +27,7 @@ public class CrptApi {
         this.lock = new Object();
     }
 
-    public void createDocument(Object document, String signature) {
+    public void createDocument(Document document, String signature) {
         synchronized (this.lock) {
             if (requestCount.get() >= requestsLimit) {
                 try {
@@ -34,11 +39,13 @@ public class CrptApi {
                 }
             }
 
+            this.sendRequest("https://ismp.crpt.ru/api/v3/lk/documents/create", document, signature);
+
             this.requestCount.incrementAndGet();
         }
     }
 
-    private void sendRequest(String urlString, Object document, String signature) {
+    private void sendRequest(String urlString, Document document, String signature) {
         try {
             URL url = new URL(urlString);
 

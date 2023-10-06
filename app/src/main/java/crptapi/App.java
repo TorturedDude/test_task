@@ -3,12 +3,21 @@
  */
 package crptapi;
 
+import crptapi.models.Product;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 public class App {
     public String getGreeting() {
         return "Hello World!";
     }
 
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+        List<Product> products = new ArrayList<>();
+        products.add(new Product("gsdgsdg", new Date(), "sdfsdfsf", "sdfsfsdfs", "sdfsdfsdfs", new Date(), "fsfsfs", "sdfsdfsdfs", "sdfsfsfs"));
+        products.add(new Product("gsdgsdg", new Date(), "sdfsdfsf", "sdfsfsdfs", "sdfsdfsdfs", new Date(), "fsfsfs", "sdfsdfsdfs", "sdfsfsfs"));
+        System.out.println("\"products\": " + products);
     }
 }
