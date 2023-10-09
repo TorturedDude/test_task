@@ -3,8 +3,14 @@
  */
 package crptapi;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import crptapi.models.Document;
 import crptapi.models.Product;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,10 +20,13 @@ public class App {
         return "Hello World!";
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         List<Product> products = new ArrayList<>();
+        ObjectWriter ow = new ObjectMapper().setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY).writer().withDefaultPrettyPrinter();
         products.add(new Product("gsdgsdg", new Date(), "sdfsdfsf", "sdfsfsdfs", "sdfsdfsdfs", new Date(), "fsfsfs", "sdfsdfsdfs", "sdfsfsfs"));
         products.add(new Product("gsdgsdg", new Date(), "sdfsdfsf", "sdfsfsdfs", "sdfsdfsdfs", new Date(), "fsfsfs", "sdfsdfsdfs", "sdfsfsfs"));
-        System.out.println("\"products\": " + products);
+        Document doc = new Document("sdgsdgsg", "sdgsdgs", "dsgsdgsdgs", "dsfssggdsgds", "dsgsdggsg", "sdgsdgsdgs", new Date(), "dsfsfsf", products, new Date(), "sgsdgsdg");
+        String json = ow.writeValueAsString(doc);
+        System.out.println(json);
     }
 }

@@ -1,15 +1,16 @@
 package crptapi.api;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import crptapi.models.Document;
 
-import javax.net.ssl.HttpsURLConnection;
+import java.io.IOException;
 import java.io.OutputStream;
-import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Date;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -55,7 +56,8 @@ public class CrptApi {
             connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             connection.setUseCaches(false);
             
-            String requestBody = "{\"document\": " + document.toString() + ", \"signature\": \"" + signature + "\"}";
+
+            String requestBody = this.getJsonDocument(document) + ", {signature: \"" + signature + "\"}";
             byte[] requestBodyBytes = requestBody.getBytes(StandardCharsets.UTF_8);
 
             try (OutputStream outputStream = connection.getOutputStream()) {
@@ -65,13 +67,18 @@ public class CrptApi {
             //TODO: обработку ответа
             Integer responseCode = connection.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
-                // Обработка успешного ответа от API
+                System.out.println("Запрос отработал успешно");
             } else {
-                // Обработка ошибки от API
+                System.out.println("Запрос не отработал код ошибки: " + responseCode);
             }
         }
         catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private String getJsonDocument(Document document) throws IOException {
+        ObjectWriter ow = new ObjectMapper().setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY).writer().withDefaultPrettyPrinter();
+        return ow.writeValueAsString(document);
     }
 }

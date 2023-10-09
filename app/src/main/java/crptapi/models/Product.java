@@ -1,19 +1,33 @@
 package crptapi.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 import java.util.Date;
 
-public class Product implements Serializable {
+public class Product {
+    @JsonProperty("certificate_document")
     private final String certificateDocument;
+    @JsonProperty("certificate_document_date")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private final Date certificateDocumentDate;
+    @JsonProperty("certificate_document_number")
     private final String certificateDocumentNumber;
+    @JsonProperty("owner_inn")
     private final String ownerInn;
+    @JsonProperty("producer_inn")
     private final String producerInn;
+    @JsonProperty("production_date")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private final Date productionDate;
+    @JsonProperty("tnved_code")
     private final String tnvedCode;
+    @JsonProperty("uit_code")
     private final String uitCode;
+    @JsonProperty("uitu_code")
     private final String uituCode;
-    
+
     public Product(String certificateDocument, Date certificateDocumentDate, String certificateDocumentNumber,
                    String ownerInn, String producerInn, Date productionDate, String tnvedCode,
                    String uitCode, String uituCode) {
@@ -26,14 +40,5 @@ public class Product implements Serializable {
         this.tnvedCode = tnvedCode;
         this.uitCode = uitCode;
         this.uituCode = uituCode;
-    }
-    
-    @Override
-    public String toString() {
-        return "{ \"certificate_document\":" + this.certificateDocument + ", " +
-               "\"certificate_document_date\":" + this.certificateDocumentDate.toString() + "," +
-               "\"certificate_document_number\":" + this.certificateDocumentNumber + ", \"owner_inn\":"+ this.ownerInn + "," +
-               "\"producer_inn\":" + this.producerInn + ", \"production_date\":" + this.productionDate.toString() + ", \"tnved_code\":" + this.tnvedCode + ", " +
-               "\"uit_code\":" + this.uitCode + ", \"uitu_code\":" + this.uituCode + "}";
     }
 }
